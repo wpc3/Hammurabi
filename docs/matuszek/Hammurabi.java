@@ -14,7 +14,7 @@ import java.util.Scanner;
         public int Population = 100;
         public int bushels = 2800;
         public int acresOwned = 1000;
-        public int landValue = 19*(acresOwned/1000);
+        public int landValue = 19;
         public boolean gameOn = true;
 //        int deathByStarvation = 0;
 //        int immigrants = 5;
@@ -65,13 +65,19 @@ import java.util.Scanner;
                 uprising(Population, deathByStarvation);
 //                immigrants = immigrants(Population,acresOwned, this.bushels);
 
-
+                grainEatenByRats(bushels);
 
                 //Update population
 //                int netChangeInPop =   deathByStarvation;
 //                this.Population = Math.max(0,Population-starvationDeaths(Population,bushelsToFeed)-plagueDeaths(Population)+immigrants);
 //               Population =Population-deathByStarvation+deathByStarvation;
+                immigrants = immigrants(Population,acresOwned, this.bushels);
+                Population += immigrants;
+                //Print summary to show updates from last round.
                 printSummary(year, deathByStarvation, immigrants, Population, this.bushels,acresOwned, landValue);
+
+                //Updating Lanvalue
+                landValue = newCostOfLand();
                 year++;
 
             }
@@ -169,9 +175,11 @@ import java.util.Scanner;
             double amountOfPeopleStarved = (double) bushelsShort/20;
             double numberCeil = Math.ceil(amountOfPeopleStarved);
 
+            //To make sure we don't take out more people than we have
+            int peopleStarved = (int) Math.min(people,numberCeil);
 
-            this.Population -= (int) numberCeil;
-            return (int) numberCeil;
+            this.Population -= peopleStarved;
+            return peopleStarved;
 
         }
 
@@ -214,7 +222,9 @@ import java.util.Scanner;
             if (random.nextInt(101) < 40) {
                 Random random2 = new Random();
                 double randomNumber2 = random2.nextInt(21)+10;
-                return  (int) (bushels * randomNumber2/100);
+                int eaten = (int) (bushels * randomNumber2/100);
+                System.out.println("Rats have infested your food! They ate " + eaten + " of your bushels");
+                return  eaten;
 
             }
 
