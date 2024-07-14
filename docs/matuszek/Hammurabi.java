@@ -16,8 +16,8 @@ import java.util.Scanner;
         public int acresOwned = 1000;
         public int landValue = 19*(acresOwned/1000);
         public boolean gameOn = true;
-        int deathByStarvation = 0;
-        int immigrants = 5;
+//        int deathByStarvation = 0;
+//        int immigrants = 5;
         Random rand = new Random();  // this is an instance variable
         Scanner scanner = new Scanner(System.in);
 
@@ -29,32 +29,49 @@ import java.util.Scanner;
         void playGame() {
             // declare local variables here: grain, population, etc.
             // statements go after the declations
+            int deathByStarvation = 0;
+            int immigrants = 0;
+
+            System.out.println("O great Hammurabi!\n" +
+                    "You are in year 1 of your ten year rule.\n" +
+                    "In the previous year 0 people starved to death.\n" +
+                    "In the previous year 5 people entered the kingdom.\n" +
+                    "The population is now 100.\n" +
+                    "We harvested 3000 bushels at 3 bushels per acre.\n" +
+                    "Rats destroyed 200 bushels, leaving 2800 bushels in storage.\n" +
+                    "The city owns 1000 acres of land.\n" +
+                    "Land is currently worth 19 bushels per acre.");
 
             while (gameOn && year<=10) {
-                System.out.println("O great Hammurabi!\n" +
-                        "You are in year " + year + " of your ten year rule.\n" +
-                        "In the previous year " + deathByStarvation +  " people starved to death.\n" +
-                        "In the previous year " + immigrants +  " people entered the kingdom.\n" +
-                        "The population is now " + Population + "\n" +
-                        "We harvested 3000 bushels in year 1 at 3 bushels per acre.\n" +
-                        "Rats destroyed 200 bushels in year 1, leaving " + this.bushels + " bushels in storage.\n" +
-                        "The city owns " + acresOwned +  " acres of land.\n" +
-                        "Land is currently worth " + landValue + " bushels per acre.\n");
+//                System.out.println("O great Hammurabi!\n" +
+//                        "You are in year " + year + " of your ten year rule.\n" +
+//                        "In the previous year " + deathByStarvation +  " people starved to death.\n" +
+//                        "In the previous year " + immigrants +  " people entered the kingdom.\n" +
+//                        "The population is now " + Population + "\n" +
+//                        "We harvested 3000 bushels in year 1 at 3 bushels per acre.\n" +
+//                        "Rats destroyed 200 bushels in year 1, leaving " + this.bushels + " bushels in storage.\n" +
+//                        "The city owns " + acresOwned +  " acres of land.\n" +
+//                        "Land is currently worth " + landValue + " bushels per acre.\n");
                 //User Decisions
+
                 howManyAcresToBuy(19, bushels);
                 askHowManyAcresTosell(acresOwned);
                 int bushelsToFeed =  askHowMuchGrainToFeedPeople(bushels);
                 askHowManyAcresToPlant(acresOwned, Population, bushels);
 
                 //Yearly Deaths or Uprising
-                plagueDeaths(Population);
-                deathByStarvation = starvationDeaths(Population, bushelsToFeed);
+               int plagueDeaths = plagueDeaths(Population);
+                 deathByStarvation = starvationDeaths(Population, bushelsToFeed);
                 uprising(Population, deathByStarvation);
+//                immigrants = immigrants(Population,acresOwned, this.bushels);
+
+
 
                 //Update population
-                this.Population = Math.max(0,Population-starvationDeaths(Population,bushelsToFeed)-plagueDeaths(Population)+immigrants);
-                immigrants = immigrants(Population,acresOwned, this.bushels);
-
+//                int netChangeInPop =   deathByStarvation;
+//                this.Population = Math.max(0,Population-starvationDeaths(Population,bushelsToFeed)-plagueDeaths(Population)+immigrants);
+//               Population =Population-deathByStarvation+deathByStarvation;
+                printSummary(year, deathByStarvation, immigrants, Population, this.bushels,acresOwned, landValue);
                 year++;
 
             }
@@ -150,6 +167,8 @@ import java.util.Scanner;
             int bushelsShort = amountOfBushelsNeeded - bushelsToFeed;
             double amountOfPeopleStarved = (double) bushelsShort/20;
             double numberCeil = Math.ceil(amountOfPeopleStarved);
+
+
             this.Population -= (int) numberCeil;
             return (int) numberCeil;
 
@@ -182,9 +201,11 @@ import java.util.Scanner;
         public int harvest(int acres) {
             Random random = new Random();
             int randomNum =random.nextInt(6)+1;
-            this.bushels = acres * randomNum;
+            int haverstedBushels = acres*randomNum;
+//            this.bushels = acres * randomNum;
+            this.bushels += haverstedBushels;
 
-            return randomNum;
+            return haverstedBushels;
         }
 
         public int grainEatenByRats(int bushels) {
@@ -208,6 +229,17 @@ import java.util.Scanner;
             int newPrice = random.nextInt(7)+17;
 
             return newPrice;
+        }
+
+        public void printSummary(int year, int deathByStarvation, int immigrants, int Population, int bushels, int acresOwned, int landValue){
+
+            System.out.println("In year " + year + " of your ten year rule.\n" +
+                    "In the previous year " + deathByStarvation +  " people starved to death.\n" +
+                    "In the previous year " + immigrants +  " people entered the kingdom.\n" +
+                    "The population is now " + Population + "\n" +
+                    "You have " + this.bushels + " bushels in storage.\n" +
+                    "The city owns " + acresOwned +  " acres of land.\n" +
+                    "Land is currently worth " + landValue + " bushels per acre.\n");
         }
 
 
