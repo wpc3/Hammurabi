@@ -31,6 +31,7 @@ import java.util.Scanner;
         public int acreToPlant;
         public int howManyAcresToPlant;
         public int harvest1;
+        int peopleStarving;
 //        int deathByStarvation = 0;
 //        int immigrants = 5;
         Random rand = new Random();  // this is an instance variable
@@ -46,7 +47,7 @@ import java.util.Scanner;
             // statements go after the declations
 
             int immigrants = 0;
-
+//
             System.out.println("O great Hammurabi!\n" +
                     "You are in year 1 of your ten year rule.\n" +
                     "In the previous year 0 people starved to death.\n" +
@@ -55,22 +56,25 @@ import java.util.Scanner;
                     "We harvested 3000 bushels at 3 bushels per acre.\n" +
                     "Rats destroyed 200 bushels, leaving 2800 bushels in storage.\n" +
                     "The city owns 1000 acres of land.\n" +
-                    "Land is currently worth 19 bushels per acre.");
+                    "Land is currently worth 19 bushels per acre. \n");
 
             while (gameOn && year<=10) {
-                System.out.println("O great Hammurabi!\n" +
-                        "You are in year " + year + " of your ten year rule.\n" +
-                        "In the previous year " + deathByStarvation +  " people starved to death.\n" +
-                        "In the previous year " + immigrants +  " people entered the kingdom.\n" +
-                        "The population is now " + population + "\n" +
-                        "We harvested" + harvest1  + "bushels \n" +
-                        "Rats destroyed  " + grainDestroyedByRats + " bushels in storage.\n" +
-                        "The city owns " + acresOwned +  " acres of land.\n" +
-                        "Land is currently worth " + landValue + " bushels per acre.\n");
-//                System.out.println("Year: " + year);
-//                System.out.println("Population before decisions: " + population);
-//                System.out.println("Bushels before decisions: " + this.bushels);
-//                System.out.println("Acres owned before decisions: " + acresOwned);
+//                System.out.println("O great Hammurabi!\n" +
+//                        "You are in year " + year + " of your ten year rule.\n" +
+//                        "In the previous year " + starvationDeaths(population,bushelsToFeed) +  " people starved to death.\n" +
+//                        "In the previous year " + immigrants +  " people entered the kingdom.\n" +
+//                        "The population is now " + population + "\n" +
+//                        "We harvested " + harvest1  + "bushels \n" +
+//                        "Rats destroyed  " + grainDestroyedByRats + " bushels in storage.\n" +
+//                        "The city owns " + acresOwned +  " acres of land.\n" +
+//                        "Land is currently worth " + landValue + " bushels per acre.\n");
+                System.out.println("Year: " + year);
+                System.out.println("Population before decisions: " + population);
+                System.out.println("Bushels before decisions: " + this.bushels);
+                System.out.println("Acres owned before decisions: " + acresOwned);
+                System.out.println("People starved " + peopleStarving);
+                System.out.println("Land value " + newLandCost);
+
 
                 //User Decisions
 
@@ -81,20 +85,20 @@ import java.util.Scanner;
 
 
                 //Yearly Deaths or Uprising
-               plagueDeaths(population);
-               starvationDeaths(population, bushelsToFeed);
-                uprising(population, deathByStarvation);
+              int plagues = plagueDeaths(population);
+                peopleStarving = starvationDeaths(population, bushelsToFeed);
+                uprising(population,peopleStarving);
 //                immigrants(population,acresOwned,bushels);
                 harvest1 = harvest(howManyAcresToPlant);
 //                grainEatenByRats(bushels);
-                newCostOfLand();
-                year++;
+
                 completeStarved += deathByStarvation;
                 completeAcreOwned += acresOwned;
 //                immigrants = immigrants(Population,acresOwned, this.bushels);
 
-                grainEatenByRats(bushels);
-
+//                grainEatenByRats(bushels);
+                newCostOfLand();
+                year++;
 
                 //Update population
 //                int netChangeInPop =   deathByStarvation;
@@ -106,7 +110,7 @@ import java.util.Scanner;
 
 
                 //Print summary to show updates from last round.
-                printSummary(year, deathByStarvation, immigrants, population, this.bushels,acresOwned, landValue);
+//                printSummary(year, deathByStarvation, immigrants, population, this.bushels,acresOwned, landValue);
 
                 //Updating Landvalue
 //                landValue = newCostOfLand();
@@ -115,7 +119,12 @@ import java.util.Scanner;
 //                System.out.println("Population after decisions: " + population);
 //                System.out.println("Bushels after decisions: " + bushels);
 //                System.out.println("Acres owned after decisions: " + acresOwned);
-
+                System.out.println("Year: " + year);
+                System.out.println("Population before decisions: " + population);
+                System.out.println("Bushels before decisions: " + this.bushels);
+                System.out.println("Acres owned before decisions: " + acresOwned);
+                System.out.println("People starved " + peopleStarving);
+                System.out.println("Land value " + newLandCost);
 
 
             }
@@ -302,7 +311,7 @@ import java.util.Scanner;
 
         public void endGameSummary(){
 
-            if((this.population /100)< 10 && (acresOwned/1000) >= 1){
+            if((this.population /100)> .9 && (acresOwned/1000) >= 1){
                 System.out.println("Congratulations. You have finished your reign as leader of WilliamTown. You have done a fine job.");
             }
             else System.out.println("You have finished your 10 year reign as leader of WilliamTown. Although you have have not been overthrown, the people decided it's in your best interest to step down.");
