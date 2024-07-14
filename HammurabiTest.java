@@ -125,6 +125,19 @@ import org.junit.Test;
             }
         }
 
+//        @Test
+//        public final void finalSummaryTest(){
+//            //Given
+//            ham.Population = 95/100;
+//            ham.acresOwned = 1001/100;
+//            ham.endGameSummary();
+//
+//            //When
+//            String expected = "Congratulations. You have finished your reign as leader of WilliamTown. You have done a fine job.";
+//
+//            assertEquals(expected,out);
+//        }
+
     }
 
 

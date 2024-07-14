@@ -1,3 +1,5 @@
+
+
 package hammurabi.docs.matuszek;
 
 import java.util.Random;
@@ -11,11 +13,24 @@ import java.util.Scanner;
 
     public class Hammurabi {
         int year =1;
-        public int Population = 100;
-        public int bushels = 2800;
+        public int population = 100;
+         int bushels = 2800;
         public int acresOwned = 1000;
         public int landValue = 19;
         public boolean gameOn = true;
+        int harvestAmount;
+        public int grainToFeed;
+        public int grainDestroyedByRats;
+        public int newpeople;
+        public int yeild;
+        public int newLandCost=19;
+        public int completeStarved=0;
+        public int completeAcreOwned=0;
+        public int deathByStarvation;
+        public int bushelsToFeed;
+        public int acreToPlant;
+        public int howManyAcresToPlant;
+        public int harvest1;
 //        int deathByStarvation = 0;
 //        int immigrants = 5;
         Random rand = new Random();  // this is an instance variable
@@ -29,7 +44,7 @@ import java.util.Scanner;
         void playGame() {
             // declare local variables here: grain, population, etc.
             // statements go after the declations
-            int deathByStarvation = 0;
+
             int immigrants = 0;
 
             System.out.println("O great Hammurabi!\n" +
@@ -43,42 +58,65 @@ import java.util.Scanner;
                     "Land is currently worth 19 bushels per acre.");
 
             while (gameOn && year<=10) {
-//                System.out.println("O great Hammurabi!\n" +
-//                        "You are in year " + year + " of your ten year rule.\n" +
-//                        "In the previous year " + deathByStarvation +  " people starved to death.\n" +
-//                        "In the previous year " + immigrants +  " people entered the kingdom.\n" +
-//                        "The population is now " + Population + "\n" +
-//                        "We harvested 3000 bushels in year 1 at 3 bushels per acre.\n" +
-//                        "Rats destroyed 200 bushels in year 1, leaving " + this.bushels + " bushels in storage.\n" +
-//                        "The city owns " + acresOwned +  " acres of land.\n" +
-//                        "Land is currently worth " + landValue + " bushels per acre.\n");
+                System.out.println("O great Hammurabi!\n" +
+                        "You are in year " + year + " of your ten year rule.\n" +
+                        "In the previous year " + deathByStarvation +  " people starved to death.\n" +
+                        "In the previous year " + immigrants +  " people entered the kingdom.\n" +
+                        "The population is now " + population + "\n" +
+                        "We harvested" + harvest1  + "bushels \n" +
+                        "Rats destroyed  " + grainDestroyedByRats + " bushels in storage.\n" +
+                        "The city owns " + acresOwned +  " acres of land.\n" +
+                        "Land is currently worth " + landValue + " bushels per acre.\n");
+//                System.out.println("Year: " + year);
+//                System.out.println("Population before decisions: " + population);
+//                System.out.println("Bushels before decisions: " + this.bushels);
+//                System.out.println("Acres owned before decisions: " + acresOwned);
+
                 //User Decisions
 
-                howManyAcresToBuy(19, bushels);
+                howManyAcresToBuy(newLandCost, bushels);
                 askHowManyAcresTosell(acresOwned);
-                int bushelsToFeed =  askHowMuchGrainToFeedPeople(bushels);
-                askHowManyAcresToPlant(acresOwned, Population, bushels);
+                 bushelsToFeed =  askHowMuchGrainToFeedPeople(bushels);
+                 acreToPlant = askHowManyAcresToPlant(acresOwned, population, bushels);
+
 
                 //Yearly Deaths or Uprising
-               int plagueDeaths = plagueDeaths(Population);
-                 deathByStarvation = starvationDeaths(Population, bushelsToFeed);
-                uprising(Population, deathByStarvation);
+               plagueDeaths(population);
+               starvationDeaths(population, bushelsToFeed);
+                uprising(population, deathByStarvation);
+//                immigrants(population,acresOwned,bushels);
+                harvest1 = harvest(howManyAcresToPlant);
+//                grainEatenByRats(bushels);
+                newCostOfLand();
+                year++;
+                completeStarved += deathByStarvation;
+                completeAcreOwned += acresOwned;
 //                immigrants = immigrants(Population,acresOwned, this.bushels);
 
                 grainEatenByRats(bushels);
+
 
                 //Update population
 //                int netChangeInPop =   deathByStarvation;
 //                this.Population = Math.max(0,Population-starvationDeaths(Population,bushelsToFeed)-plagueDeaths(Population)+immigrants);
 //               Population =Population-deathByStarvation+deathByStarvation;
-                immigrants = immigrants(Population,acresOwned, this.bushels);
-                Population += immigrants;
-                //Print summary to show updates from last round.
-                printSummary(year, deathByStarvation, immigrants, Population, this.bushels,acresOwned, landValue);
+//                immigrants = immigrants(Population,acresOwned, this.bushels);
+//                Population += immigrants;
 
-                //Updating Lanvalue
-                landValue = newCostOfLand();
-                year++;
+
+
+                //Print summary to show updates from last round.
+                printSummary(year, deathByStarvation, immigrants, population, this.bushels,acresOwned, landValue);
+
+                //Updating Landvalue
+//                landValue = newCostOfLand();
+//                this.harvestAmount= harvest(acreToPlant);
+
+//                System.out.println("Population after decisions: " + population);
+//                System.out.println("Bushels after decisions: " + bushels);
+//                System.out.println("Acres owned after decisions: " + acresOwned);
+
+
 
             }
             endGameSummary();
@@ -92,6 +130,7 @@ import java.util.Scanner;
             if (bushels >= price) {
                 this.bushels -= price;
                 this.acresOwned += userInput;
+//                return userInput;
             }
             else {
                 System.out.println("You do not have enough bushels :(");
@@ -106,6 +145,7 @@ import java.util.Scanner;
             if(userInpt <= acresOwned){
                 this.acresOwned -= userInpt;
                 this.bushels += userInpt * landValue;
+                return userInpt;
             }
             else {
                 System.out.println("You don't have enough acres to sell that amount");
@@ -113,29 +153,29 @@ import java.util.Scanner;
             System.out.println("You have " + this.bushels + " amount of bushels left" + " and " + this.acresOwned + " amount of acres.");
             return userInpt;
         }
-        public int askHowMuchGrainToFeedPeople(int bushels){
-            System.out.println("How many bushels would you like to feed the people \n");
+        public int askHowMuchGrainToFeedPeople(int currentbushels){
+            System.out.println("How many bushels would you like to feed the people. " + "You have " + this.bushels + " bushels." + "\n");
 
             int userInput = scanner.nextInt();
-            if(userInput <= bushels){
-                this.bushels -= userInput;
+            if(userInput <= currentbushels){
+//                this.bushels -= userInput;
             }
             else {
                 System.out.println("You don't have enough :(");
             }
-            System.out.println("Thank you for feeding the people " + userInput + "  bushels, you currently " + this.bushels + " bushels left.");
+            System.out.println("Thank you for feeding the people " + userInput );
 
             return userInput;
         }
 
         public int askHowManyAcresToPlant(int acresOwned, int population, int bushels) {
             while (true) {
-                System.out.println("How many acres would you like to plant with grain. You have " + this.acresOwned + " amount of acres owned. \n");
+                System.out.println("How many acres would you like to plant with grain. \n");
 
                 int acresToPlant = scanner.nextInt();
                 int amountOfBushelsNeed = acresToPlant * 2;
                 int amountOfPeopleNeeded = acresToPlant / 10;
-                if (acresToPlant < acresOwned && amountOfBushelsNeed < bushels && amountOfPeopleNeeded < this.Population) {
+                if (acresToPlant <= this.acresOwned && amountOfBushelsNeed <= this.bushels && amountOfPeopleNeeded <= this.population) {
                     System.out.println("You are currently planting " + acresToPlant + " amount of acres");
                     this.bushels -= amountOfBushelsNeed;
                     return acresToPlant;
@@ -154,10 +194,10 @@ import java.util.Scanner;
         public int plagueDeaths(int population) {
             Random random = new Random();
             if(random.nextInt(101) <15){
-                System.out.println("Sorry, you guys got hit with a nasty plaque. You lost half youre population :(");
+                System.out.println("Sorry, you guys got hit with a nasty plaque. You lost half your population :(");
 
-                this.Population -= this.Population/2;
-                return this.Population;
+                this.population -= (this.population /2);
+                return this.population;
             }
 //        System.out.println("You have a current population of " + this.Population);
             return 0;
@@ -167,6 +207,7 @@ import java.util.Scanner;
             int amountOfBushelsNeeded = people * 20;
             if (bushelsToFeed >= amountOfBushelsNeeded) {
                 this.bushels -= amountOfBushelsNeeded;
+                deathByStarvation = 0;
 //            immigrants(Population, this.acresOwned,this.bushels);
                 return 0;
             }
@@ -176,10 +217,10 @@ import java.util.Scanner;
             double numberCeil = Math.ceil(amountOfPeopleStarved);
 
             //To make sure we don't take out more people than we have
-            int peopleStarved = (int) Math.min(people,numberCeil);
+//            int peopleStarved = (int) Math.min(people,numberCeil);
 
-            this.Population -= peopleStarved;
-            return peopleStarved;
+            this.population -= numberCeil;
+            return (int) numberCeil;
 
         }
 
@@ -196,25 +237,29 @@ import java.util.Scanner;
         }
 
         public int immigrants(int population, int acresOwned, int grainInStorage) {
-            if(starvationDeaths(population,grainInStorage) ==0){
+            if(this.deathByStarvation ==0){
                 int result = (20 * acresOwned + grainInStorage) / (100 * population) + 1;
                 System.out.println("You gained immigrants");
+                newpeople = result;
+                this.population +=result;
                 return result;
 
             }
             else{
                 System.out.println("You gained no immigrants");}
+            newpeople=0;
             return 0;
         }
 
         public int harvest(int acres) {
             Random random = new Random();
-            int randomNum =random.nextInt(6)+1;
-            int haverstedBushels = acres*randomNum;
+            this.yeild =random.nextInt(6)+1;
+//            int haverstedBushels = acres*randomNum;
 //            this.bushels = acres * randomNum;
-            this.bushels += haverstedBushels;
-
-            return haverstedBushels;
+            this.bushels += (acres * this.yeild);
+            this.harvestAmount = acres*this.yeild;
+//            System.out.println(bushels);
+            return this.harvestAmount;
         }
 
         public int grainEatenByRats(int bushels) {
@@ -222,9 +267,10 @@ import java.util.Scanner;
             if (random.nextInt(101) < 40) {
                 Random random2 = new Random();
                 double randomNumber2 = random2.nextInt(21)+10;
-                int eaten = (int) (bushels * randomNumber2/100);
-                System.out.println("Rats have infested your food! They ate " + eaten + " of your bushels");
-                return  eaten;
+                this.grainDestroyedByRats = (int) (bushels * randomNumber2/100);
+                this.bushels -= this.grainDestroyedByRats;
+                System.out.println("Rats have infested your food! They ate " + this.grainDestroyedByRats + " of your bushels");
+                return  this.grainDestroyedByRats;
 
             }
 
@@ -238,6 +284,7 @@ import java.util.Scanner;
         public int newCostOfLand() {
             Random random = new Random();
             int newPrice = random.nextInt(7)+17;
+            newLandCost = newPrice;
 
             return newPrice;
         }
@@ -255,10 +302,10 @@ import java.util.Scanner;
 
         public void endGameSummary(){
 
-            if((this.Population/1000)< 10 && (acresOwned/1000) >= 1){
+            if((this.population /100)< 10 && (acresOwned/1000) >= 1){
                 System.out.println("Congratulations. You have finished your reign as leader of WilliamTown. You have done a fine job.");
             }
-            else System.out.println("You have finished your 10 year reing as leader of WilliamTown. Although you have have not been overthrown, the people decided it's in your best interest to step down.");
+            else System.out.println("You have finished your 10 year reign as leader of WilliamTown. Although you have have not been overthrown, the people decided it's in your best interest to step down.");
         }
 
 
