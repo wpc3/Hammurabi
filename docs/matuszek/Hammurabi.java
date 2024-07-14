@@ -75,6 +75,7 @@ import java.util.Scanner;
                 year++;
 
             }
+            endGameSummary();
             scanner.close();
         }
 
@@ -233,13 +234,21 @@ import java.util.Scanner;
 
         public void printSummary(int year, int deathByStarvation, int immigrants, int Population, int bushels, int acresOwned, int landValue){
 
-            System.out.println("In year " + year + " of your ten year rule.\n" +
-                    "In the previous year " + deathByStarvation +  " people starved to death.\n" +
+            System.out.println("In year " + year + " of your ten year rule.\n " +
+                     deathByStarvation +  " people starved to death.\n" +
                     "In the previous year " + immigrants +  " people entered the kingdom.\n" +
                     "The population is now " + Population + "\n" +
                     "You have " + this.bushels + " bushels in storage.\n" +
                     "The city owns " + acresOwned +  " acres of land.\n" +
                     "Land is currently worth " + landValue + " bushels per acre.\n");
+        }
+
+        public void endGameSummary(){
+
+            if((this.Population/1000)< 10 && (acresOwned/1000) >= 1){
+                System.out.println("Congratulations. You have finished your reign as leader of WilliamTown. You have done a fine job.");
+            }
+            else System.out.println("You have finished your 10 year reing as leader of WilliamTown. Although you have have not been overthrown, the people decided it's in your best interest to step down.");
         }
 
 
