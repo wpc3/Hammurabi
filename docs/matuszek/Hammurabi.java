@@ -32,6 +32,7 @@ import java.util.Scanner;
         public int howManyAcresToPlant;
         public int harvest1;
         int peopleStarving;
+        boolean uprising;
 //        int deathByStarvation = 0;
 //        int immigrants = 5;
         Random rand = new Random();  // this is an instance variable
@@ -58,7 +59,7 @@ import java.util.Scanner;
                     "The city owns 1000 acres of land.\n" +
                     "Land is currently worth 19 bushels per acre. \n");
 
-            while (gameOn && year<=10) {
+            while (gameOn && year<10) {
 //                System.out.println("O great Hammurabi!\n" +
 //                        "You are in year " + year + " of your ten year rule.\n" +
 //                        "In the previous year " + starvationDeaths(population,bushelsToFeed) +  " people starved to death.\n" +
@@ -87,7 +88,7 @@ import java.util.Scanner;
                 //Yearly Deaths or Uprising
               int plagues = plagueDeaths(population);
                 peopleStarving = starvationDeaths(population, bushelsToFeed);
-                uprising(population,peopleStarving);
+                 uprising = uprising(population,peopleStarving);
 //                immigrants(population,acresOwned,bushels);
                 harvest1 = harvest(howManyAcresToPlant);
 //                grainEatenByRats(bushels);
@@ -120,9 +121,9 @@ import java.util.Scanner;
 //                System.out.println("Bushels after decisions: " + bushels);
 //                System.out.println("Acres owned after decisions: " + acresOwned);
                 System.out.println("Year: " + year);
-                System.out.println("Population before decisions: " + population);
-                System.out.println("Bushels before decisions: " + this.bushels);
-                System.out.println("Acres owned before decisions: " + acresOwned);
+                System.out.println("Population after decisions: " + population);
+                System.out.println("Bushels after decisions: " + this.bushels);
+                System.out.println("Acres owned after decisions: " + acresOwned);
                 System.out.println("People starved " + peopleStarving);
                 System.out.println("Land value " + newLandCost);
 
@@ -163,7 +164,7 @@ import java.util.Scanner;
             return userInpt;
         }
         public int askHowMuchGrainToFeedPeople(int currentbushels){
-            System.out.println("How many bushels would you like to feed the people. " + "You have " + this.bushels + " bushels." + "\n");
+            System.out.println("How many bushels would you like to feed the people. Each person need 20 bushels to survive. " + "You have " + this.bushels + " bushels." + "\n");
 
             int userInput = scanner.nextInt();
             if(userInput <= currentbushels){
@@ -179,7 +180,7 @@ import java.util.Scanner;
 
         public int askHowManyAcresToPlant(int acresOwned, int population, int bushels) {
             while (true) {
-                System.out.println("How many acres would you like to plant with grain. \n");
+                System.out.println("How many acres would you like to plant with grain. It costs 2 bushels and you need 10 people to plant per acre \n");
 
                 int acresToPlant = scanner.nextInt();
                 int amountOfBushelsNeed = acresToPlant * 2;
@@ -313,8 +314,10 @@ import java.util.Scanner;
 
             if((this.population /100)> .9 && (acresOwned/1000) >= 1){
                 System.out.println("Congratulations. You have finished your reign as leader of WilliamTown. You have done a fine job.");
-            }
-            else System.out.println("You have finished your 10 year reign as leader of WilliamTown. Although you have have not been overthrown, the people decided it's in your best interest to step down.");
+            } else if (uprising) {
+                System.out.println("You have been overthrown and sent to the gallows :(");
+
+            } else System.out.println("You have finished your 10 year reign as leader of WilliamTown. Although you have have not been overthrown, the people decided it's in your best interest to step down.");
         }
 
 
