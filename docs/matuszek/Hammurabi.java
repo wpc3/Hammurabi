@@ -137,48 +137,57 @@ import java.util.Scanner;
         }
 
         public int howManyAcresToBuy(int price, int bushels) {
-            System.out.println("HOW MANY ACRES DO YOU WISH TO BUY? ");
-            int userInput = scanner.nextInt();
-            price = userInput * 19;
-            if (bushels >= price) {
-                this.bushels -= price;
-                this.acresOwned += userInput;
+            while (true) {
+                System.out.println("HOW MANY ACRES DO YOU WISH TO BUY? ");
+                int userInput = scanner.nextInt();
+                price = userInput * 19;
+                if (bushels >= price) {
+                    this.bushels -= price;
+                    this.acresOwned += userInput;
+
+                    System.out.println("You have " + this.bushels + " bushels left " + "and " + this.acresOwned + " acres owned.");
+                    return userInput;
 //                return userInput;
+                } else {
+                    System.out.println("You do not have enough bushels :(");
+                }
+
             }
-            else {
-                System.out.println("You do not have enough bushels :(");
-            }
-            System.out.println("You have " + this.bushels + " bushels left " + "and " + this.acresOwned + " acres owned.");
-            return userInput;
         }
 
         public int askHowManyAcresTosell(int acresOwned){
-            System.out.println("How many acres of land would you like to sell? \n");
-            int userInpt = scanner.nextInt();
-            if(userInpt <= acresOwned){
-                this.acresOwned -= userInpt;
-                this.bushels += userInpt * landValue;
-                return userInpt;
+            while (true) {
+                System.out.println("How many acres of land would you like to sell? \n");
+                int userInpt = scanner.nextInt();
+                if (userInpt <= acresOwned) {
+                    this.acresOwned -= userInpt;
+                    this.bushels += userInpt * landValue;
+//                    return userInpt;
+
+                    System.out.println("You have " + this.bushels + " amount of bushels left" + " and " + this.acresOwned + " amount of acres.");
+                    return userInpt;
+                } else {
+                    System.out.println("You don't have enough acres to sell that amount");
+                }
+
             }
-            else {
-                System.out.println("You don't have enough acres to sell that amount");
-            }
-            System.out.println("You have " + this.bushels + " amount of bushels left" + " and " + this.acresOwned + " amount of acres.");
-            return userInpt;
         }
         public int askHowMuchGrainToFeedPeople(int currentbushels){
-            System.out.println("How many bushels would you like to feed the people. Each person need 20 bushels to survive. " + "You have " + this.bushels + " bushels." + "\n");
 
-            int userInput = scanner.nextInt();
-            if(userInput <= currentbushels){
+                System.out.println("How many bushels would you like to feed the people. Each person need 20 bushels to survive. " + "You have " + this.bushels + " bushels." + "\n");
+
+                int userInput = scanner.nextInt();
+                if (userInput <= currentbushels) {
 //                this.bushels -= userInput;
-            }
-            else {
-                System.out.println("You don't have enough :(");
-            }
-            System.out.println("Thank you for feeding the people " + userInput );
+                } else {
+                    System.out.println("You don't have enough :(");
+                    return askHowMuchGrainToFeedPeople(currentbushels);
+                }
+                System.out.println("Thank you for feeding the people " + userInput);
+
 
             return userInput;
+
         }
 
         public int askHowManyAcresToPlant(int acresOwned, int population, int bushels) {
