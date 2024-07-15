@@ -68,14 +68,15 @@ import java.util.Scanner;
 //                        "We harvested " + harvest1  + "bushels \n" +
 //                        "Rats destroyed  " + grainDestroyedByRats + " bushels in storage.\n" +
 //                        "The city owns " + acresOwned +  " acres of land.\n" +
-//                        "Land is currently worth " + landValue + " bushels per acre.\n");
+//                        "Land is currently worth " + landValue + " bushels per acre.\n")
+                System.out.println("***********************************************");
                 System.out.println("Year: " + year);
                 System.out.println("Population before decisions: " + population);
                 System.out.println("Bushels before decisions: " + this.bushels);
                 System.out.println("Acres owned before decisions: " + acresOwned);
                 System.out.println("People starved " + peopleStarving);
                 System.out.println("Land value " + newLandCost);
-
+                System.out.println("***********************************************");
 
                 //User Decisions
 
@@ -89,9 +90,9 @@ import java.util.Scanner;
               int plagues = plagueDeaths(population);
                 peopleStarving = starvationDeaths(population, bushelsToFeed);
                  uprising = uprising(population,peopleStarving);
-//                immigrants(population,acresOwned,bushels);
-                harvest1 = harvest(howManyAcresToPlant);
-//                grainEatenByRats(bushels);
+                immigrants(population,acresOwned,bushels);
+                harvest1 = harvest(acreToPlant);
+                grainEatenByRats(bushels);
 
                 completeStarved += deathByStarvation;
                 completeAcreOwned += acresOwned;
@@ -120,13 +121,15 @@ import java.util.Scanner;
 //                System.out.println("Population after decisions: " + population);
 //                System.out.println("Bushels after decisions: " + bushels);
 //                System.out.println("Acres owned after decisions: " + acresOwned);
+                System.out.println("***********************************************");
                 System.out.println("Year: " + year);
                 System.out.println("Population after decisions: " + population);
                 System.out.println("Bushels after decisions: " + this.bushels);
                 System.out.println("Acres owned after decisions: " + acresOwned);
                 System.out.println("People starved " + peopleStarving);
                 System.out.println("Land value " + newLandCost);
-
+                System.out.println("Harvest amount " + harvestAmount);
+                System.out.println("***********************************************");
 
             }
             endGameSummary();
@@ -247,7 +250,7 @@ import java.util.Scanner;
         }
 
         public int immigrants(int population, int acresOwned, int grainInStorage) {
-            if(this.deathByStarvation ==0){
+            if(peopleStarving ==0){
                 int result = (20 * acresOwned + grainInStorage) / (100 * population) + 1;
                 System.out.println("You gained immigrants");
                 newpeople = result;
